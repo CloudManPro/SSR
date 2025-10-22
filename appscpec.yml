@@ -1,19 +1,25 @@
 version: 0.0
 os: linux
 files:
-  - source: / # Pega todo o conteúdo do artefato
-    destination: /var/www/nextjs-ssr # E coloca nesta pasta na EC2
+  - source: /
+    destination: /var/www/ssr-app/
+    overwrite: true
+file_exists_behavior: OVERWRITE
 
 hooks:
   BeforeInstall:
-    - location: scripts/stop_server.sh # Script para parar a versão antiga da aplicação
+    - location: scripts/before_install.sh
       timeout: 300
       runas: root
+  ApplicationStop:
+    - location: scripts/stop_server.sh
+      timeout: 300
+      runas: ec2-user
+  AfterInstall:
+    - location: scripts/install_dependencies.sh
+      timeout: 300
+      runas: ec2-user
   ApplicationStart:
-    - location: scripts/start_server.sh # Script para iniciar a nova versão
+    - location: scripts/start_server.sh
       timeout: 300
-      runas: root
-  ValidateService:
-    - location: scripts/validate_service.sh # Script para verificar se a aplicação subiu corretamente
-      timeout: 300
-      runas: root
+      runas: ec2-user
