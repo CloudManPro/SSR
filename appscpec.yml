@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+  - source: / # Pega todo o conteúdo do artefato
+    destination: /var/www/nextjs-ssr # E coloca nesta pasta na EC2
+
+hooks:
+  BeforeInstall:
+    - location: scripts/stop_server.sh # Script para parar a versão antiga da aplicação
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_server.sh # Script para iniciar a nova versão
+      timeout: 300
+      runas: root
+  ValidateService:
+    - location: scripts/validate_service.sh # Script para verificar se a aplicação subiu corretamente
+      timeout: 300
+      runas: root
