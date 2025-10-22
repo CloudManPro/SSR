@@ -1,0 +1,41 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18 # Garante que estamos usando uma versão compatível do Node.js
+    commands:
+      - echo "Iniciando fase de instalação..."
+      - npm install # Instala todas as dependências do package.json
+
+  pre_build:
+    commands:
+      - echo "Iniciando fase de pré-build..."
+      # Comandos de teste ou lint podem ser adicionados aqui
+
+  build:
+    commands:
+      - echo "Iniciando fase de build..."
+      - npm run build # Compila a aplicação Next.js e cria a pasta .next
+
+      - echo "Sincronizando assets estáticos com o S3..."
+      # Copia a pasta /public para a raiz do bucket S3
+      - aws s3 sync ./public/ s3://clube-de-empresarios-static/ --delete
+
+      # Copia os assets gerados pelo build para a pasta /_next/static no S3
+      - aws s3 sync ./.next/static/ s3://clube-de-empresarios-static/_next/static/ --delete
+
+  post_build:
+    commands:
+      - echo "Fase de build concluída com sucesso!"
+
+artifacts:
+  files:
+    # Estes são os arquivos que serão empacotados e enviados para o CodeDeploy
+    - .next/**/*
+    - node_modules/**/*
+    - package.json
+    - package-lock.json
+    - appspec.yml
+    - scripts/**/* # Inclui a pasta com os scripts de deploy
+  discard-paths: yes # Mantém a estrutura de pastas limpa no artefato
