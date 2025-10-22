@@ -50,7 +50,7 @@ export default async function HomePage() {
         <p>{dynamicData.message}</p>
         <h2>{dynamicData.timestamp}</h2>
         <p>
-          A informação acima (o horário) é "dinâmica". Ela é gerada na sua
+          A informação acima (o horário) é "dinâmica ". Ela é gerada na sua
           <strong>instância EC2</strong> toda vez que você recarrega a página.
         </p>
         <p>
