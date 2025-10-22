@@ -45,7 +45,7 @@ export default async function HomePage() {
       </div>
 
       {/* ======================= PARTE DINÂMICA ======================= */}
-      <div style={{ border: '2px solid orange', padding: '1rem', borderRadius: '8px', backgroundColor: '#fff8e1' }}>
+      <div style={{ border: '2px solid orange', padding: '1rem', borderRadius: '7px', backgroundColor: '#fff8e1' }}>
         <h1>⚡ Conteúdo Dinâmico (SSR)</h1>
         <p>{dynamicData.message}</p>
         <h2>{dynamicData.timestamp}</h2>
