@@ -28,7 +28,7 @@ export default async function HomePage() {
     <main style={{ fontFamily: 'sans-serif', padding: '2rem' }}>
       
       {/* ======================= PARTE ESTÁTICA ======================= */}
-      <div style={{ border: '2px solid blue', padding: '1rem', marginBottom: '2rem', borderRadius: '7px' }}>
+      <div style={{ border: '2px solid blue', padding: '1rem', marginBottom: '2rem', borderRadius: '8px' }}>
         <h1>📦 Conteúdo Estático</h1>
         <p>
           Este texto, o título, e a estrutura HTML desta caixa são "estáticos".
