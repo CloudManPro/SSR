@@ -2,11 +2,9 @@ version: 0.2
 
 phases:
   install:
-    # ===== INÍCIO DA ADIÇÃO =====
     # Especifica qual versão do Node.js queremos que o CodeBuild use
     runtime-versions:
       nodejs: 20
-    # ===== FIM DA ADIÇÃO =====
     commands:
       - echo "Iniciando fase de instalação..."
       - npm install
@@ -22,11 +20,11 @@ phases:
       - npm run build # Compila a aplicação Next.js e cria a pasta .next
 
       - echo "Sincronizando assets estáticos com o S3..."
-      # Copia a pasta /public para a raiz do bucket S3
-      - aws s3 sync ./public/ s3://clube-de-empresarios-static/ --delete
+      # Copia a pasta /public para a raiz do bucket S3 usando a variável de ambiente
+      - aws s3 sync ./public/ s3://${AWS_S3_BUCKET_TARGET_NAME_1}/ --delete
 
-      # Copia os assets gerados pelo build para a pasta /_next/static no S3
-      - aws s3 sync ./.next/static/ s3://clube-de-empresarios-static/_next/static/ --delete
+      # Copia os assets gerados pelo build para a pasta /_next/static no S3 usando a variável de ambiente
+      - aws s3 sync ./.next/static/ s3://${AWS_S3_BUCKET_TARGET_NAME_1}/_next/static/ --delete
 
   post_build:
     commands:
