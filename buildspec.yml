@@ -2,12 +2,15 @@ version: 0.2
 
 phases:
   install:
+    # ===== INÍCIO DA ADIÇÃO =====
+    # Especifica qual versão do Node.js queremos que o CodeBuild use
     runtime-versions:
-      nodejs: 18 # Garante que estamos usando uma versão compatível do Node.js
+      nodejs: 20
+    # ===== FIM DA ADIÇÃO =====
     commands:
       - echo "Iniciando fase de instalação..."
-      - npm install # Instala todas as dependências do package.json
-
+      - npm install
+      
   pre_build:
     commands:
       - echo "Iniciando fase de pré-build..."
