@@ -1,4 +1,5 @@
 #!/bin/bash
+#start_server.sh
 # Navega para o diretório da aplicação
 cd /var/www/ssr-app
 
