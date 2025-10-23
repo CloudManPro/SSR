@@ -29,6 +29,8 @@ phases:
       # Imprime o conteúdo do appspec.yml para garantir que ele existe e está acessível.
       # Se este comando falhar, significa que o arquivo não está na raiz do projeto.
       - echo "Verificando o conteúdo do appspec.yml..."
+      - echo "Listando todos os arquivos e pastas na raiz do projeto para depuração..."
+      - ls -la
       - cat appspec.yml
       - echo "Verificação do appspec.yml concluída."
 
