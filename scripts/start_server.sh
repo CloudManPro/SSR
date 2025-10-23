@@ -1,12 +1,9 @@
+# scripts/start_server.sh
 #!/bin/bash
-#start_server.sh
-# Navega para o diretório da aplicação
 cd /var/www/ssr-app
 
-# Inicia a aplicação Next.js com PM2
-# O nome 'ssr-app' é um identificador para o processo
-pm2 start npm --name "ssr-app" -- start
+# 1. Inicia ou reinicia o processo.
+pm2 startOrRestart ecosystem.config.js --env production
 
-# Garante que o PM2 reinicie com o servidor
+# 2. Salva a lista de processos atual.
 pm2 save
-pm2 startup
