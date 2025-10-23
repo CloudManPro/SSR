@@ -35,7 +35,7 @@ phases:
       - echo "Verificação do appspec.yml concluída."
 
 artifacts:
-      files:
+  files:
     # A CORREÇÃO CRÍTICA: Inclui a pasta de build completa do Next.js
     - '.next/**/*'
     # Os outros arquivos necessários para o deploy, exatamente como você queria
