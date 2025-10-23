@@ -1,14 +1,17 @@
 #!/bin/bash
-#before_install.sh
-# Cria o diretório da aplicação se ele não existir (importante para o primeiro deploy)
-mkdir -p /var/www/ssr-app
+# scripts/after_install.sh
 
-# Remove APENAS o conteúdo do diretório antigo para garantir uma instalação limpa
-# O 'shopt' e o 'dotglob' garantem que arquivos ocultos (como .env) também sejam removidos.
-shopt -s dotglob
-rm -rf /var/www/ssr-app/*
-shopt -u dotglob
-
-# Muda o proprietário do diretório para o ec2-user, permitindo que os
-# próximos passos do deploy (que rodam como ec2-user) possam escrever nele.
+# CORREÇÃO A SER ADICIONADA AQUI NO TOPO DO ARQUIVO
 chown -R ec2-user:ec2-user /var/www/ssr-app
+
+# --- O RESTO DO SEU CÓDIGO PERMANECE ---
+
+# Navega para o diretório da aplicação
+cd /var/www/ssr-app
+
+# Instala as dependências de produção do Node.js
+npm install --production
+
+# Gera e configura o script de inicialização do PM2
+# ADICIONE 'sudo' AQUI
+sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u ec2-user --hp /home/ec2-user
