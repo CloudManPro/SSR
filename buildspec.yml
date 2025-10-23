@@ -43,6 +43,7 @@ artifacts:
     # Arquivos de configuração do projeto necessários em produção
     - 'package.json'
     - 'package-lock.json'
+    - 'ecosystem.config.js'
     
     # Arquivos para o CodeDeploy
     - 'appspec.yml'
