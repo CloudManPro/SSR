@@ -2,7 +2,6 @@ version: 0.2
 
 phases:
   install:
-    # Especifica qual versão do Node.js queremos que o CodeBuild use
     runtime-versions:
       nodejs: 20
     commands:
@@ -12,18 +11,15 @@ phases:
   pre_build:
     commands:
       - echo "Iniciando fase de pré-build..."
-      # Comandos de teste ou lint podem ser adicionados aqui
 
   build:
     commands:
       - echo "Iniciando fase de build..."
-      - npm run build # Compila a aplicação Next.js e cria a pasta .next
+      - npm run build
 
       - echo "Sincronizando assets estáticos com o S3..."
-      # Copia a pasta /public para a raiz do bucket S3 usando a variável de ambiente
+      # Seu Terraform já define as variáveis AWS_S3_BUCKET_TARGET_NAME_1 para o bucket estático
       - aws s3 sync ./public/ s3://${AWS_S3_BUCKET_TARGET_NAME_1}/ --delete
-
-      # Copia os assets gerados pelo build para a pasta /_next/static no S3 usando a variável de ambiente
       - aws s3 sync ./.next/static/ s3://${AWS_S3_BUCKET_TARGET_NAME_1}/_next/static/ --delete
 
   post_build:
@@ -32,11 +28,21 @@ phases:
 
 artifacts:
   files:
-    # Estes são os arquivos que serão empacotados e enviados para o CodeDeploy
-    - .next/**/*
-    - node_modules/**/*
-    - package.json
-    - package-lock.json
-    - appspec.yml
-    - scripts/**/* # Inclui a pasta com os scripts de deploy
-  discard-paths: yes # Mantém a estrutura de pastas limpa no artefato
+    # --- AJUSTE PRINCIPAL ---
+    # Para o servidor SSR (Server-Side Rendering), precisamos APENAS dos arquivos
+    # essenciais para rodar o servidor, não dos arquivos estáticos que já foram para o S3.
+    # O diretório '.next/standalone' é otimizado para isso quando configurado.
+    # Se não usar 'standalone', precisamos do '.next/server'.
+    - '.next/server/**/*'
+    - '.next/package.json' # Em alguns modos de build, um package.json otimizado é criado aqui
+    - 'node_modules/**/*'
+    - 'package.json'
+    - 'package-lock.json'
+    # Inclui o arquivo de configuração do CodeDeploy na raiz do artefato
+    - 'appspec.yml'
+    # Inclui a pasta com todos os scripts de deploy
+    - 'scripts/**/*'
+  # --- AJUSTE CRUCIAL ---
+  # 'discard-paths' remove os caminhos originais. Usar 'no' garante que um arquivo em 'scripts/start.sh'
+  # seja colocado como 'scripts/start.sh' no artefato, em vez de apenas 'start.sh'.
+  discard-paths: no
