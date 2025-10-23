@@ -35,18 +35,14 @@ phases:
       - echo "Verificação do appspec.yml concluída."
 
 artifacts:
-  files:
-    # Arquivos essenciais para rodar o servidor SSR
-    - '.next/server/**/*'
-    - '.next/package.json' 
-    
-    # Arquivos de configuração do projeto necessários em produção
+      files:
+    # A CORREÇÃO CRÍTICA: Inclui a pasta de build completa do Next.js
+    - '.next/**/*'
+    # Os outros arquivos necessários para o deploy, exatamente como você queria
     - 'package.json'
     - 'package-lock.json'
-    - 'ecosystem.config.js'
-    
-    # Arquivos para o CodeDeploy
     - 'appspec.yml'
+    - 'ecosystem.config.js'
     - 'scripts/**/*'
     
   # 'discard-paths: no' é crucial para manter a estrutura de pastas (appspec.yml na raiz)
