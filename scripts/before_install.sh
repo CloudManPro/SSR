@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#before_install.sh
 # Cria o diretório da aplicação se ele não existir (importante para o primeiro deploy)
 mkdir -p /var/www/ssr-app
 
