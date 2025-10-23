@@ -24,25 +24,27 @@ phases:
 
   post_build:
     commands:
-      - echo "Fase de build concluída com sucesso!"
+      - echo "Fase de build concluída."
+      # --- VERIFICAÇÃO ADICIONADA ---
+      # Imprime o conteúdo do appspec.yml para garantir que ele existe e está acessível.
+      # Se este comando falhar, significa que o arquivo não está na raiz do projeto.
+      - echo "Verificando o conteúdo do appspec.yml..."
+      - cat appspec.yml
+      - echo "Verificação do appspec.yml concluída."
 
 artifacts:
   files:
-    # --- AJUSTE PRINCIPAL ---
-    # Para o servidor SSR (Server-Side Rendering), precisamos APENAS dos arquivos
-    # essenciais para rodar o servidor, não dos arquivos estáticos que já foram para o S3.
-    # O diretório '.next/standalone' é otimizado para isso quando configurado.
-    # Se não usar 'standalone', precisamos do '.next/server'.
+    # Arquivos essenciais para rodar o servidor SSR
     - '.next/server/**/*'
-    - '.next/package.json' # Em alguns modos de build, um package.json otimizado é criado aqui
-    - 'node_modules/**/*'
+    - '.next/package.json' 
+    
+    # Arquivos de configuração do projeto necessários em produção
     - 'package.json'
     - 'package-lock.json'
-    # Inclui o arquivo de configuração do CodeDeploy na raiz do artefato
+    
+    # Arquivos para o CodeDeploy
     - 'appspec.yml'
-    # Inclui a pasta com todos os scripts de deploy
     - 'scripts/**/*'
-  # --- AJUSTE CRUCIAL ---
-  # 'discard-paths' remove os caminhos originais. Usar 'no' garante que um arquivo em 'scripts/start.sh'
-  # seja colocado como 'scripts/start.sh' no artefato, em vez de apenas 'start.sh'.
+    
+  # 'discard-paths: no' é crucial para manter a estrutura de pastas (appspec.yml na raiz)
   discard-paths: no
