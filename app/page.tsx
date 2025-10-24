@@ -41,6 +41,12 @@ export default async function HomePage() {
           width={100} 
           style={{ marginTop: '1rem' }} 
         />
+        <img 
+          src="/CloudManFinal.png" 
+          alt="Cloudman" 
+          width={100} 
+          style={{ marginTop: '1rem' }} 
+        />
         <p><i>(Esta imagem também é um asset estático que irá para o S3)</i></p>
       </div>
 
